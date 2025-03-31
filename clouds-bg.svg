@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" />
+    </filter>
+  </defs>
+  
+  <!-- Nubes grandes -->
+  <ellipse cx="200" cy="150" rx="100" ry="60" fill="#c9e9f9" filter="url(#blur)" />
+  <ellipse cx="900" cy="120" rx="120" ry="70" fill="#c9e9f9" filter="url(#blur)" />
+  <ellipse cx="500" cy="200" rx="150" ry="80" fill="#c9e9f9" filter="url(#blur)" />
+  <ellipse cx="1100" cy="250" rx="90" ry="50" fill="#c9e9f9" filter="url(#blur)" />
+  
+  <!-- Nubes medianas -->
+  <ellipse cx="300" cy="350" rx="80" ry="40" fill="#c9e9f9" filter="url(#blur)" />
+  <ellipse cx="700" cy="300" rx="100" ry="50" fill="#c9e9f9" filter="url(#blur)" />
+  <ellipse cx="100" cy="450" rx="70" ry="35" fill="#c9e9f9" filter="url(#blur)" />
+  <ellipse cx="1000" cy="400" rx="110" ry="55" fill="#c9e9f9" filter="url(#blur)" />
+  
+  <!-- Nubes pequeñas -->
+  <ellipse cx="400" cy="500" rx="60" ry="30" fill="#c9e9f9" filter="url(#blur)" />
+  <ellipse cx="800" cy="550" rx="50" ry="25" fill="#c9e9f9" filter="url(#blur)" />
+  <ellipse cx="200" cy="600" rx="40" ry="20" fill="#c9e9f9" filter="url(#blur)" />
+  <ellipse cx="600" cy="650" rx="70" ry="35" fill="#c9e9f9" filter="url(#blur)" />
+  <ellipse cx="1100" cy="600" rx="55" ry="30" fill="#c9e9f9" filter="url(#blur)" />
+</svg>

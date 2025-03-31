@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuentos Bíblicos para Niños</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #70c7e6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Nubes de fondo */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="none"><path d="M0,150 Q150,100 300,150 T600,150 T900,150 T1200,150 V1000 H0 Z" fill="%2370c7e6" opacity="0.7"/></svg>');
+            background-size: cover;
+            z-index: -1;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .nav {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 1.5rem;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav a:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            color: #ffd650;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            background-color: #ff7f3f;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .characters {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0 3rem;
+        }
+        
+        .story-section {
+            background-color: #ffd650;
+            padding: 2rem 0;
+            border-radius: 30px 30px 0 0;
+            margin-top: 2rem;
+        }
+        
+        .story-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            color: #2c5aa0;
+            margin-bottom: 2rem;
+        }
+        
+        .story-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .story-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .story-img {
+            width: 100%;
+            height: 150px;
+            background-color: #a1d1e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .story-content {
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .story-content h3 {
+            color: #2c5aa0;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .story-content .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        /* Nubes */
+        .cloud {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            z-index: -1;
+        }
+        
+        .cloud1 {
+            width: 150px;
+            height: 60px;
+            top: 120px;
+            left: 50px;
+            animation: float 20s infinite linear;
+        }
+        
+        .cloud2 {
+            width: 100px;
+            height: 40px;
+            top: 200px;
+            right: 80px;
+            animation: float 15s infinite linear reverse;
+        }
+        
+        .cloud3 {
+            width: 120px;
+            height: 50px;
+            bottom: 300px;
+            left: 150px;
+            animation: float 25s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(100px); }
+            100% { transform: translateX(0); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .nav a {
+                font-size: 0.9rem;
+                margin-right: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .logo {
+                margin-bottom: 1rem;
+            }
+            
+            .nav {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .nav a {
+                margin: 0.5rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .story-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+    
+    <header class="header">
+        <div class="logo">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="15" y="15" width="70" height="70" rx="5" fill="#ffd650" />
+                <rect x="25" y="10" width="50" height="80" rx="5" fill="white" />
+                <rect x="35" y="20" width="30" height="5" rx="2" fill="#70c7e6" />
+                <rect x="35" y="30" width="30" height="5" rx="2" fill="#70c7e6" />
+                <rect x="35" y="40" width="30" height="5" rx="2" fill="#70c7e6" />
+                <rect x="35" y="50" width="20" height="5" rx="2" fill="#70c7e6" />
+            </svg>
+        </div>
+        <nav class="nav">
+            <a href="#">Inicio</a>
+            <a href="#">Cuentos</a>
+            <a href="#">Personajes Bíblicos</a>
+            <a href="#">Versículos para Niños</a>
+            <a href="#">Juegos</a>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <h1>Cuentos Bíblicos<br>para Niños</h1>
+        <p>Explora las historias más maravillosas<br>de la Biblia</p>
+        <button class="btn">Leer un cuento</button>
+        
+        <div class="characters">
+            <svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Personas bíblicas simplificadas -->
+                <!-- Anciano -->
+                <circle cx="80" cy="70" r="25" fill="#FFD9B3" />
+                <path d="M55 70 Q80 110 105 70" fill="white" />
+                <rect x="70" y="90" width="20" height="50" rx="5" fill="#FF9F55" />
+                
+                <!-- Niño con corona -->
+                <circle cx="150" cy="70" r="20" fill="#FFD9B3" />
+                <rect x="140" y="90" width="20" height="40" rx="5" fill="#FFEB3B" />
+                <path d="M130 65 L150 50 L170 65" fill="#FFD700" stroke="#FFD700" stroke-width="2" />
+                
+                <!-- Hombre mayor -->
+                <circle cx="220" cy="70" r="22" fill="#FFD9B3" />
+                <rect x="210" y="90" width="20" height="45" rx="5" fill="#BF360C" />
+                <path d="M200 70 Q220 100 240 70" fill="#888" />
+                
+                <!-- Jesús -->
+                <circle cx="290" cy="70" r="23" fill="#FFD9B3" />
+                <rect x="280" y="90" width="20" height="47" rx="5" fill="#FF5252" />
+                <path d="M270 70 Q290 110 310 70" fill="#8D6E63" />
+                
+                <!-- Elefante -->
+                <ellipse cx="30" cy="120" rx="25" ry="20" fill="#888" />
+                <path d="M30 130 Q40 150 50 130" fill="#888" stroke="none" />
+                
+                <!-- Fuego de zarza -->
+                <path d="M330 120 Q340 100 350 120 Q360 100 370 120 Q350 150 330 120" fill="#FF5722" />
+                <path d="M340 110 Q350 90 360 110 Q350 130 340 110" fill="#FFEB3B" />
+            </svg>
+        </div>
+    </section>
+    
+    <section class="story-section">
+        <h2>Cuentos</h2>
+        <div class="story-grid">
+            <!-- Historia 1 -->
+            <div class="story-card">
+                <div class="story-img">
+                    <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- David y Goliat -->
+                        <circle cx="30" cy="30" r="10" fill="#FFD9B3" />
+                        <rect x="25" y="40" width="10" height="20" rx="3" fill="#FF9F55" />
+                        <circle cx="70" cy="30" r="15" fill="#FFD9B3" />
+                        <rect x="65" y="45" width="10" height="25" rx="3" fill="#8D6E63" />
+                    </svg>
+                </div>
+                <div class="story-content">
+                    <h3>La Historia de David y Goliat</h3>
+                    <button class="btn">Leer más</button>
+                </div>
+            </div>
+            
+            <!-- Historia 2 -->
+            <div class="story-card">
+                <div class="story-img">
+                    <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Arca de Noé -->
+                        <path d="M20 60 L50 40 L80 60 L80 80 L20 80 Z" fill="#8D6E63" />
+                        <rect x="45" y="60" width="10" height="10" fill="#5D4037" />
+                        <circle cx="70" cy="50" r="5" fill="#FFEB3B" />
+                    </svg>
+                </div>
+                <div class="story-content">
+                    <h3>Noé y el Arca</h3>
+                    <button class="btn">Leer más</button>
+                </div>
+            </div>
+            
+            <!-- Historia 3 -->
+            <div class="story-card">
+                <div class="story-img">
+                    <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Éxodo -->
+                        <path d="M10 40 Q50 20 90 40 Q50 60 10 40" fill="#64B5F6" />
+                        <path d="M40 40 L60 40" stroke="#8D6E63" stroke-width="5" />
+                        <circle cx="30" cy="30" r="10" fill="#FFD9B3" />
+                    </svg>
+                </div>
+                <div class="story-content">
+                    <h3>El Éxodo de Egipto</h3>
+                    <button class="btn">Leer más</button>
+                </div>
+            </div>
+            
+            <!-- Historia 4 -->
+            <div class="story-card">
+                <div class="story-img">
+                    <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Jesús calma la tormenta -->
+                        <path d="M10 60 Q30 40 50 60 Q70 40 90 60" fill="#64B5F6" />
+                        <path d="M30 60 L70 60 L60 70 L40 70 Z" fill="#8D6E63" />
+                        <circle cx="50" cy="40" r="10" fill="#FFD9B3" />
+                    </svg>
+                </div>
+                <div class="story-content">
+                    <h3>Jesús Calma la Tormenta</h3>
+                    <button class="btn">Leer más</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

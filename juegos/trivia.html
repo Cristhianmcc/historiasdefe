@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Bíblica - Cuentos Bíblicos para Niños</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .game-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .game-info h2 {
+            font-size: 2rem;
+            color: #1a3c6e;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-info p {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 2rem;
+            background-color: #f5f5f5;
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a3c6e;
+        }
+
+        .trivia-container {
+            margin-bottom: 2rem;
+        }
+
+        .question-container {
+            background-color: #f5f5f5;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .question {
+            font-size: 1.3rem;
+            color: #1a3c6e;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .option {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #e0e0e0;
+        }
+
+        .option:hover {
+            border-color: #65c0f7;
+        }
+
+        .option.correct {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        .option.incorrect {
+            background-color: #F44336;
+            color: white;
+            border-color: #F44336;
+        }
+
+        .option.selected {
+            border-color: #1a3c6e;
+            background-color: #e6f7ff;
+        }
+
+        .feedback {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+            border: 1px solid #A5D6A7;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: #FFEBEE;
+            color: #C62828;
+            border: 1px solid #FFCDD2;
+            display: block;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn-control {
+            background-color: #1a3c6e;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0.8rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Baloo 2', cursive;
+            transition: all 0.3s ease;
+        }
+
+        .btn-control:hover {
+            background-color: #ff7a3d;
+            transform: translateY(-3px);
+        }
+
+        .btn-control:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-container {
+            text-align: center;
+            display: none;
+        }
+
+        .result-container h2 {
+            font-size: 2rem;
+            color: #1a3c6e;
+            margin-bottom: 1rem;
+        }
+
+        .result-score {
+            font-size: 4rem;
+            color: #ff7a3d;
+            margin-bottom: 1.5rem;
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+
+        .category-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .category-btn {
+            background-color: #65c0f7;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0.6rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Baloo 2', cursive;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background-color: #1a3c6e;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../img/logo.png" alt="Logo de Cuentos Bíblicos">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../index.html#cuentos">Cuentos</a></li>
+                <li><a href="../personajes.html">Personajes Bíblicos</a></li>
+                <li><a href="../versiculos.html">Versículos para Niños</a></li>
+                <li><a href="../juegos.html" class="active">Juegos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Trivia Bíblica</h1>
+            <p>Pon a prueba tus conocimientos sobre la Biblia</p>
+        </section>
+
+        <section class="game-section">
+            <div class="game-container">
+                <div class="game-info">
+                    <h2>Trivia Bíblica</h2>
+                    <p>Responde las preguntas y aprende más sobre las historias de la Biblia.</p>
+                </div>
+
+                <div id="category-screen">
+                    <h3 style="text-align: center; margin-bottom: 1.5rem; color: #1a3c6e;">Elige una categoría</h3>
+                    <div class="category-selector">
+                        <button class="category-btn" data-category="personajes">Personajes</button>
+                        <button class="category-btn" data-category="historias">Historias</button>
+                        <button class="category-btn" data-category="lugares">Lugares</button>
+                        <button class="category-btn" data-category="mixto">Mixto</button>
+                    </div>
+                </div>
+
+                <div id="quiz-screen" style="display: none;">
+                    <div class="game-stats">
+                        <div class="stat">
+                            <div class="stat-label">Pregunta</div>
+                            <div class="stat-value" id="question-number">1/10</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Puntuación</div>
+                            <div class="stat-value" id="score">0</div>
+                        </div>
+                    </div>
+
+                    <div class="trivia-container">
+                        <div class="question-container">
+                            <div class="question" id="question">¿Quién construyó el arca?</div>
+                            <div class="options" id="options">
+                                <!-- Las opciones se generarán con JavaScript -->
+                            </div>
+                            <div class="feedback" id="feedback"></div>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <button class="btn-control" id="prev-btn" disabled>Anterior</button>
+                        <button class="btn-control" id="next-btn" disabled>Siguiente</button>
+                    </div>
+                </div>
+
+                <div id="result-screen" class="result-container">
+                    <h2>¡Has completado la trivia!</h2>
+                    <div class="result-score" id="final-score">0/10</div>
+                    <div class="result-message" id="result-message">Mensaje basado en la puntuación</div>
+                    <button class="btn-control" id="restart-btn">Jugar de nuevo</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="../img/logo.png" alt="Cuentos Bíblicos para Niños">
+                <p>Cuentos Bíblicos para Niños</p>
+            </div>
+            <div class="footer-links">
+                <h3>Enlaces rápidos</h3>
+                <ul>
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li><a href="../index.html#cuentos">Cuentos</a></li>
+                    <li><a href="../personajes.html">Personajes Bíblicos</a></li>
+                    <li><a href="../versiculos.html">Versículos para Niños</a></li>
+                    <li><a href="../juegos.html">Juegos</a></li>
+                    <li><a href="../index.html#contacto">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-newsletter">
+                <h3>Suscríbete a nuestro boletín</h3>
+                <p>Recibe nuevos cuentos y actividades en tu correo electrónico.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Tu correo electrónico" required>
+                    <button type="submit" class="btn-primary">Suscribirse</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Cuentos Bíblicos para Niños. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Elementos del DOM
+        const categoryScreen = document.getElementById('category-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const questionElement = document.getElementById('question');
+        const optionsContainer = document.getElementById('options');
+        const feedbackElement = document.getElementById('feedback');
+        const questionNumberElement = document.getElementById('question-number');
+        const scoreElement = document.getElementById('score');
+        const finalScoreElement = document.getElementById('final-score');
+        const resultMessageElement = document.getElementById('result-message');
+        const prevButton = document.getElementById('prev-btn');
+        const nextButton = document.getElementById('next-btn');
+        const restartButton = document.getElementById('restart-btn');
+
+        // Variables del juego
+        let currentCategory = '';
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+
+        // Preguntas por categoría
+        const questionsByCategory = {
+            personajes: [
+                {
+                    question: "¿Quién construyó un arca para salvar a los animales del diluvio?",
+                    options: ["Noé", "Moisés", "Abraham", "David"],
+                    answer: 0
+                },
+                {
+                    question: "¿Quién derrotó al gigante Goliat?",
+                    options: ["Sansón", "Salomón", "David", "Josué"],
+                    answer: 2
+                },
+                {
+                    question: "¿Quién recibió los Diez Mandamientos en el Monte Sinaí?",
+                    options: ["Abraham", "Moisés", "Josué", "Elías"],
+                    answer: 1
+                },
+                {
+                    question: "¿Quién fue arrojado a un foso de leones pero fue protegido por Dios?",
+                    options: ["Daniel", "Jonás", "José", "Jeremías"],
+                    answer: 0
+                },
+                {
+                    question: "¿Quién fue tragado por un gran pez?",
+                    options: ["Pedro", "Pablo", "Jonás", "Juan"],
+                    answer: 2
+                }
+            ],
+            historias: [
+                {
+                    question: "¿Qué animal habló con Balaam en el camino?",
+                    options: ["Un león", "Una serpiente", "Un burro", "Una paloma"],
+                    answer: 2
+                },
+                {
+                    question: "¿Cuántos días y noches llovió durante el diluvio?",
+                    options: ["7 días y 7 noches", "30 días y 30 noches", "40 días y 40 noches", "100 días y 100 noches"],
+                    answer: 2
+                },
+                {
+                    question: "¿Qué construyeron los hombres para llegar al cielo?",
+                    options: ["Una montaña", "Una escalera", "Una torre", "Un puente"],
+                    answer: 2
+                },
+                {
+                    question: "¿Qué mar dividió Moisés para que los israelitas pudieran cruzar?",
+                    options: ["Mar Mediterráneo", "Mar Muerto", "Mar de Galilea", "Mar Rojo"],
+                    answer: 3
+                },
+                {
+                    question: "¿Qué utilizó David para derrotar a Goliat?",
+                    options: ["Una espada", "Una honda y una piedra", "Una lanza", "Un arco y flecha"],
+                    answer: 1
+                }
+            ],
+            lugares: [
+                {
+                    question: "¿En qué ciudad nació Jesús?",
+                    options: ["Nazaret", "Jerusalén", "Belén", "Galilea"],
+                    answer: 2
+                },
+                {
+                    question: "¿Dónde recibió Moisés los Diez Mandamientos?",
+                    options: ["Monte Sinaí", "Monte de los Olivos", "Monte Carmelo", "Monte Hermón"],
+                    answer: 0
+                },
+                {
+                    question: "¿Qué río fue dividido por Josué para que los israelitas pudieran cruzar?",
+                    options: ["Río Nilo", "Río Jordán", "Río Éufrates", "Río Tigris"],
+                    answer: 1
+                },
+                {
+                    question: "¿En qué jardín fue arrestado Jesús?",
+                    options: ["Jardín del Edén", "Jardín de Getsemaní", "Jardín de las Rosas", "Jardín del Templo"],
+                    answer: 1
+                },
+                {
+                    question: "¿Dónde construyó Noé el arca?",
+                    options: ["En el monte Ararat", "En el desierto", "En un valle", "La Biblia no especifica el lugar exacto"],
+                    answer: 3
+                }
+            ]
+        };
+
+        // Mezclar preguntas para la categoría "mixto"
+        questionsByCategory.mixto = [
+            ...questionsByCategory.personajes.slice(0, 3),
+            ...questionsByCategory.historias.slice(0, 4),
+            ...questionsByCategory.lugares.slice(0, 3)
+        ];
+
+        // Función para mezclar un array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Iniciar el juego con la categoría seleccionada
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                currentCategory = button.dataset.category;
+                questions = shuffleArray([...questionsByCategory[currentCategory]]);
+                startQuiz();
+            });
+        });
+
+        // Iniciar el quiz
+        function startQuiz() {
+            categoryScreen.style.display = 'none';
+            quizScreen.style.display = 'block';
+            resultScreen.style.display = 'none';
+            
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = Array(questions.length).fill(null);
+            
+            updateUI();
+        }
+
+        // Actualizar la interfaz con la pregunta actual
+        function updateUI() {
+            const question = questions[currentQuestionIndex];
+            questionElement.textContent = question.question;
+            
+            optionsContainer.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('option');
+                optionElement.textContent = option;
+                
+                // Si el usuario ya respondió esta pregunta
+                if (userAnswers[currentQuestionIndex] !== null) {
+                    if (index === userAnswers[currentQuestionIndex]) {
+                        optionElement.classList.add('selected');
+                        
+                        if (index === question.answer) {
+                            optionElement.classList.add('correct');
+                        } else {
+                            optionElement.classList.add('incorrect');
+                        }
+                    } else if (index === question.answer) {
+                        optionElement.classList.add('correct');
+                    }
+                    
+                    optionElement.style.pointerEvents = 'none';
+                } else {
+                    optionElement.addEventListener('click', () => selectOption(index));
+                }
+                
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Actualizar número de pregunta y puntuación
+            questionNumberElement.textContent = `${currentQuestionIndex + 1}/${questions.length}`;
+            scoreElement.textContent = score;
+            
+            // Actualizar estado de los botones
+            prevButton.disabled = currentQuestionIndex === 0;
+            nextButton.disabled = userAnswers[currentQuestionIndex] === null;
+            
+            // Ocultar feedback
+            feedbackElement.className = 'feedback';
+            feedbackElement.textContent = '';
+            feedbackElement.style.display = 'none';
+        }
+
+        // Seleccionar una opción
+        function selectOption(optionIndex) {
+            const question = questions[currentQuestionIndex];
+            userAnswers[currentQuestionIndex] = optionIndex;
+            
+            // Verificar si la respuesta es correcta
+            const isCorrect = optionIndex === question.answer;
+            
+            if (isCorrect) {
+                score++;
+                scoreElement.textContent = score;
+                
+                feedbackElement.className = 'feedback correct';
+                feedbackElement.textContent = '¡Correcto! ¡Muy bien!';
+            } else {
+                feedbackElement.className = 'feedback incorrect';
+                feedbackElement.textContent = `Incorrecto. La respuesta correcta es: ${question.options[question.answer]}`;
+            }
+            
+            // Actualizar UI para mostrar respuesta correcta/incorrecta
+            const options = optionsContainer.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                if (index === optionIndex) {
+                    option.classList.add('selected');
+                    
+                    if (isCorrect) {
+                        option.classList.add('correct');
+                    } else {
+                        option.classList.add('incorrect');
+                    }
+                } else if (index === question.answer) {
+                    option.classList.add('correct');
+                }
+                
+                option.style.pointerEvents = 'none';
+            });
+            
+            // Habilitar botón siguiente
+            nextButton.disabled = false;
+        }
+
+        // Ir a la pregunta anterior
+        prevButton.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                updateUI();
+            }
+        });
+
+        // Ir a la siguiente pregunta o mostrar resultados
+        nextButton.addEventListener('click', () => {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                updateUI();
+            } else {
+                showResults();
+            }
+        });
+
+        // Mostrar resultados
+        function showResults() {
+            quizScreen.style.display = 'none';
+            resultScreen.style.display = 'block';
+            
+            finalScoreElement.textContent = `${score}/${questions.length}`;
+            
+            // Mensaje basado en la puntuación
+            const percentage = (score / questions.length) * 100;
+            
+            if (percentage >= 80) {
+                resultMessageElement.textContent = '¡Excelente! Tienes un gran conocimiento de la Biblia.';
+            } else if (percentage >= 60) {
+                resultMessageElement.textContent = '¡Muy bien! Conoces bastante sobre la Biblia.';
+            } else if (percentage >= 40) {
+                resultMessageElement.textContent = 'Buen intento. Sigue aprendiendo sobre las historias bíblicas.';
+            } else {
+                resultMessageElement.textContent = 'Sigue aprendiendo. ¡Las historias bíblicas son fascinantes!';
+            }
+        }
+
+        // Reiniciar el juego
+        restartButton.addEventListener('click', () => {
+            categoryScreen.style.display = 'block';
+            resultScreen.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

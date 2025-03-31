@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Páginas para Colorear - Cuentos Bíblicos para Niños</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .game-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .game-info h2 {
+            font-size: 2rem;
+            color: #1a3c6e;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-info p {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .coloring-pages {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .coloring-page {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .coloring-page:hover {
+            transform: translateY(-10px);
+        }
+
+        .coloring-page img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .coloring-page-info {
+            padding: 1rem;
+        }
+
+        .coloring-page-info h3 {
+            font-size: 1.2rem;
+            color: #1a3c6e;
+            margin-bottom: 0.5rem;
+        }
+
+        .coloring-page-info p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .download-btn {
+            background-color: #ff7a3d;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Baloo 2', cursive;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            background-color: #1a3c6e;
+            transform: translateY(-3px);
+        }
+
+        .instructions {
+            background-color: #f5f5f5;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .instructions h3 {
+            font-size: 1.3rem;
+            color: #1a3c6e;
+            margin-bottom: 1rem;
+        }
+
+        .instructions ol {
+            padding-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .placeholder-image {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e0e0e0;
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .placeholder-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: #1a3c6e;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../img/logo.png" alt="Logo de Cuentos Bíblicos">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../index.html#cuentos">Cuentos</a></li>
+                <li><a href="../personajes.html">Personajes Bíblicos</a></li>
+                <li><a href="../versiculos.html">Versículos para Niños</a></li>
+                <li><a href="../juegos.html" class="active">Juegos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Páginas para Colorear</h1>
+            <p>Descarga e imprime estas hermosas páginas para colorear con escenas bíblicas</p>
+        </section>
+
+        <section class="game-section">
+            <div class="game-container">
+                <div class="game-info">
+                    <h2>Páginas para Colorear</h2>
+                    <p>Descarga estas páginas para colorear con tus escenas bíblicas favoritas.</p>
+                </div>
+
+                <div class="instructions">
+                    <h3>Cómo usar estas páginas para colorear:</h3>
+                    <ol>
+                        <li>Haz clic en el botón "Descargar" debajo de la imagen que te guste.</li>
+                        <li>Imprime la imagen en una hoja de papel.</li>
+                        <li>Usa tus lápices de colores, crayones o marcadores para colorear la imagen.</li>
+                        <li>¡Diviértete dando vida a estas escenas bíblicas con tus colores favoritos!</li>
+                    </ol>
+                </div>
+
+                <div class="coloring-pages">
+                    <div class="coloring-page">
+                        <div class="placeholder-image">
+                            <div style="text-align: center;">
+                                <i class="fas fa-ship placeholder-icon"></i>
+                                <div>Arca de Noé</div>
+                            </div>
+                        </div>
+                        <div class="coloring-page-info">
+                            <h3>Arca de Noé</h3>
+                            <p>Colorea a Noé, su arca y todos los animales que salvó del diluvio.</p>
+                            <a href="#" class="download-btn" onclick="alert('Esta función estará disponible próximamente.'); return false;">Descargar</a>
+                        </div>
+                    </div>
+
+                    <div class="coloring-page">
+                        <div class="placeholder-image">
+                            <div style="text-align: center;">
+                                <i class="fas fa-crown placeholder-icon"></i>
+                                <div>David y Goliat</div>
+                            </div>
+                        </div>
+                        <div class="coloring-page-info">
+                            <h3>David y Goliat</h3>
+                            <p>Colorea la historia del joven David enfrentándose al gigante Goliat.</p>
+                            <a href="#" class="download-btn" onclick="alert('Esta función estará disponible próximamente.'); return false;">Descargar</a>
+                        </div>
+                    </div>
+
+                    <div class="coloring-page">
+                        <div class="placeholder-image">
+                            <div style="text-align: center;">
+                                <i class="fas fa-water placeholder-icon"></i>
+                                <div>Jesús calma la tormenta</div>
+                            </div>
+                        </div>
+                        <div class="coloring-page-info">
+                            <h3>Jesús calma la tormenta</h3>
+                            <p>Colorea a Jesús calmando la tormenta en el mar de Galilea.</p>
+                            <a href="#" class="download-btn" onclick="alert('Esta función estará disponible próximamente.'); return false;">Descargar</a>
+                        </div>
+                    </div>
+
+                    <div class="coloring-page">
+                        <div class="placeholder-image">
+                            <div style="text-align: center;">
+                                <i class="fas fa-mountain placeholder-icon"></i>
+                                <div>Moisés y los Diez Mandamientos</div>
+                            </div>
+                        </div>
+                        <div class="coloring-page-info">
+                            <h3>Moisés y los Diez Mandamientos</h3>
+                            <p>Colorea a Moisés recibiendo los Diez Mandamientos en el Monte Sinaí.</p>
+                            <a href="#" class="download-btn" onclick="alert('Esta función estará disponible próximamente.'); return false;">Descargar</a>
+                        </div>
+                    </div>
+
+                    <div class="coloring-page">
+                        <div class="placeholder-image">
+                            <div style="text-align: center;">
+                                <i class="fas fa-baby placeholder-icon"></i>
+                                <div>Nacimiento de Jesús</div>
+                            </div>
+                        </div>
+                        <div class="coloring-page-info">
+                            <h3>Nacimiento de Jesús</h3>
+                            <p>Colorea la escena del nacimiento de Jesús en el pesebre de Belén.</p>
+                            <a href="#" class="download-btn" onclick="alert('Esta función estará disponible próximamente.'); return false;">Descargar</a>
+                        </div>
+                    </div>
+
+                    <div class="coloring-page">
+                        <div class="placeholder-image">
+                            <div style="text-align: center;">
+                                <i class="fas fa-fish placeholder-icon"></i>
+                                <div>Jonás y la ballena</div>
+                            </div>
+                        </div>
+                        <div class="coloring-page-info">
+                            <h3>Jonás y la ballena</h3>
+                            <p>Colorea la historia de Jonás siendo tragado por un gran pez.</p>
+                            <a href="#" class="download-btn" onclick="alert('Esta función estará disponible próximamente.'); return false;">Descargar</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <p style="color: #666; margin-bottom: 1rem;">¿Quieres más páginas para colorear? ¡Visita nuestra página regularmente para encontrar nuevas imágenes!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="../img/logo.png" alt="Cuentos Bíblicos para Niños">
+                <p>Cuentos Bíblicos para Niños</p>
+            </div>
+            <div class="footer-links">
+                <h3>Enlaces rápidos</h3>
+                <ul>
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li><a href="../index.html#cuentos">Cuentos</a></li>
+                    <li><a href="../personajes.html">Personajes Bíblicos</a></li>
+                    <li><a href="../versiculos.html">Versículos para Niños</a></li>
+                    <li><a href="../juegos.html">Juegos</a></li>
+                    <li><a href="../index.html#contacto">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-newsletter">
+                <h3>Suscríbete a nuestro boletín</h3>
+                <p>Recibe nuevos cuentos y actividades en tu correo electrónico.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Tu correo electrónico" required>
+                    <button type="submit" class="btn-primary">Suscribirse</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Cuentos Bíblicos para Niños. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

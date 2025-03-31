@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Memoria Bíblica - Cuentos Bíblicos para Niños</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .game-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .game-info h2 {
+            font-size: 2rem;
+            color: #1a3c6e;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-info p {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 2rem;
+            background-color: #f5f5f5;
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a3c6e;
+        }
+
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            perspective: 1000px;
+        }
+
+        .memory-card {
+            height: 150px;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: scale(1);
+            transition: transform 0.5s;
+            cursor: pointer;
+        }
+
+        .memory-card:active {
+            transform: scale(0.97);
+            transition: transform 0.2s;
+        }
+
+        .memory-card.flip {
+            transform: rotateY(180deg);
+        }
+
+        .front-face, .back-face {
+            width: 100%;
+            height: 100%;
+            padding: 1rem;
+            position: absolute;
+            border-radius: 10px;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .front-face {
+            transform: rotateY(180deg);
+            background-color: white;
+        }
+
+        .back-face {
+            background-color: #65c0f7;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .front-face img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .controls {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .btn-restart {
+            background-color: #ff7a3d;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0.8rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Baloo 2', cursive;
+            transition: all 0.3s ease;
+        }
+
+        .btn-restart:hover {
+            background-color: #ff6a2a;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .memory-game {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .memory-game {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../img/logo.png" alt="Logo de Cuentos Bíblicos">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../index.html#cuentos">Cuentos</a></li>
+                <li><a href="../personajes.html">Personajes Bíblicos</a></li>
+                <li><a href="../versiculos.html">Versículos para Niños</a></li>
+                <li><a href="../juegos.html" class="active">Juegos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Memoria Bíblica</h1>
+            <p>Encuentra las parejas de personajes y símbolos bíblicos</p>
+        </section>
+
+        <section class="game-section">
+            <div class="game-container">
+                <div class="game-info">
+                    <h2>Juego de Memoria</h2>
+                    <p>Haz clic en las cartas para voltearlas y encuentra todas las parejas.</p>
+                </div>
+
+                <div class="game-stats">
+                    <div class="stat">
+                        <div class="stat-label">Movimientos</div>
+                        <div class="stat-value" id="moves">0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Parejas</div>
+                        <div class="stat-value" id="pairs">0/6</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Tiempo</div>
+                        <div class="stat-value" id="time">00:00</div>
+                    </div>
+                </div>
+
+                <div class="memory-game" id="memory-game">
+                    <!-- Las cartas se generarán con JavaScript -->
+                </div>
+
+                <div class="controls">
+                    <button class="btn-restart" id="restart">Reiniciar Juego</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="../img/logo.png" alt="Cuentos Bíblicos para Niños">
+                <p>Cuentos Bíblicos para Niños</p>
+            </div>
+            <div class="footer-links">
+                <h3>Enlaces rápidos</h3>
+                <ul>
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li><a href="../index.html#cuentos">Cuentos</a></li>
+                    <li><a href="../personajes.html">Personajes Bíblicos</a></li>
+                    <li><a href="../versiculos.html">Versículos para Niños</a></li>
+                    <li><a href="../juegos.html">Juegos</a></li>
+                    <li><a href="../index.html#contacto">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-newsletter">
+                <h3>Suscríbete a nuestro boletín</h3>
+                <p>Recibe nuevos cuentos y actividades en tu correo electrónico.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Tu correo electrónico" required>
+                    <button type="submit" class="btn-primary">Suscribirse</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Cuentos Bíblicos para Niños. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Elementos del juego
+        const memoryGame = document.getElementById('memory-game');
+        const movesDisplay = document.getElementById('moves');
+        const pairsDisplay = document.getElementById('pairs');
+        const timeDisplay = document.getElementById('time');
+        const restartButton = document.getElementById('restart');
+
+        // Datos del juego
+        let cards = [];
+        let hasFlippedCard = false;
+        let lockBoard = false;
+        let firstCard, secondCard;
+        let moves = 0;
+        let pairs = 0;
+        let timer;
+        let seconds = 0;
+        let minutes = 0;
+        let gameStarted = false;
+
+        // Imágenes para las cartas
+        const cardImages = [
+            { name: 'arca', image: 'noe-arca.jpg' },
+            { name: 'david', image: 'david-goliat.jpg' },
+            { name: 'jesus', image: 'jesus-tormenta.jpg' },
+            { name: 'moises', image: 'moises.jpg' },
+            { name: 'biblia', image: 'biblia.jpg' },
+            { name: 'cruz', image: 'cruz.jpg' }
+        ];
+
+        // Inicializar el juego
+        function initGame() {
+            resetGame();
+            createCards();
+            shuffleCards();
+        }
+
+        // Crear las cartas
+        function createCards() {
+            // Duplicar las imágenes para crear pares
+            const cardPairs = [...cardImages, ...cardImages];
+            
+            // Crear elementos HTML para cada carta
+            cardPairs.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('memory-card');
+                cardElement.dataset.name = card.name;
+                cardElement.dataset.index = index;
+                
+                const frontFace = document.createElement('div');
+                frontFace.classList.add('front-face');
+                
+                // Usamos un placeholder para las imágenes
+                frontFace.innerHTML = `<div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: #ffd95c; color: #1a3c6e; font-weight: bold; font-size: 1.2rem;">${card.name.toUpperCase()}</div>`;
+                
+                const backFace = document.createElement('div');
+                backFace.classList.add('back-face');
+                backFace.innerHTML = '<i class="fas fa-bible"></i>';
+                
+                cardElement.appendChild(frontFace);
+                cardElement.appendChild(backFace);
+                
+                cardElement.addEventListener('click', flipCard);
+                
+                memoryGame.appendChild(cardElement);
+                cards.push(cardElement);
+            });
+        }
+
+        // Barajar las cartas
+        function shuffleCards() {
+            cards.forEach(card => {
+                const randomPos = Math.floor(Math.random() * 12);
+                card.style.order = randomPos;
+            });
+        }
+
+        // Voltear carta
+        function flipCard() {
+            if (lockBoard) return;
+            if (this === firstCard) return;
+            
+            this.classList.add('flip');
+            
+            if (!gameStarted) {
+                startTimer();
+                gameStarted = true;
+            }
+            
+            if (!hasFlippedCard) {
+                // Primera carta volteada
+                hasFlippedCard = true;
+                firstCard = this;
+                return;
+            }
+            
+            // Segunda carta volteada
+            secondCard = this;
+            checkForMatch();
+        }
+
+        // Verificar si las cartas coinciden
+        function checkForMatch() {
+            moves++;
+            movesDisplay.textContent = moves;
+            
+            let isMatch = firstCard.dataset.name === secondCard.dataset.name;
+            
+            if (isMatch) {
+                disableCards();
+                pairs++;
+                pairsDisplay.textContent = `${pairs}/6`;
+                
+                if (pairs === 6) {
+                    setTimeout(() => {
+                        stopTimer();
+                        alert(`¡Felicidades! Has completado el juego en ${moves} movimientos y ${timeDisplay.textContent} tiempo.`);
+                    }, 500);
+                }
+            } else {
+                unflipCards();
+            }
+        }
+
+        // Deshabilitar cartas coincidentes
+        function disableCards() {
+            firstCard.removeEventListener('click', flipCard);
+            secondCard.removeEventListener('click', flipCard);
+            
+            resetBoard();
+        }
+
+        // Voltear cartas que no coinciden
+        function unflipCards() {
+            lockBoard = true;
+            
+            setTimeout(() => {
+                firstCard.classList.remove('flip');
+                secondCard.classList.remove('flip');
+                
+                resetBoard();
+            }, 1000);
+        }
+
+        // Reiniciar variables del tablero
+        function resetBoard() {
+            [hasFlippedCard, lockBoard] = [false, false];
+            [firstCard, secondCard] = [null, null];
+        }
+
+        // Iniciar temporizador
+        function startTimer() {
+            timer = setInterval(() => {
+                seconds++;
+                if (seconds === 60) {
+                    minutes++;
+                    seconds = 0;
+                }
+                
+                timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // Detener temporizador
+        function stopTimer() {
+            clearInterval(timer);
+        }
+
+        // Reiniciar juego
+        function resetGame() {
+            stopTimer();
+            memoryGame.innerHTML = '';
+            cards = [];
+            hasFlippedCard = false;
+            lockBoard = false;
+            firstCard = null;
+            secondCard = null;
+            moves = 0;
+            pairs = 0;
+            seconds = 0;
+            minutes = 0;
+            gameStarted = false;
+            
+            movesDisplay.textContent = '0';
+            pairsDisplay.textContent = '0/6';
+            timeDisplay.textContent = '00:00';
+        }
+
+        // Evento para reiniciar el juego
+        restartButton.addEventListener('click', initGame);
+
+        // Iniciar el juego al cargar la página
+        window.addEventListener('load', initGame);
+    </script>
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rompecabezas Bíblicos - Cuentos Bíblicos para Niños</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .game-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .game-info h2 {
+            font-size: 2rem;
+            color: #1a3c6e;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-info p {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 2rem;
+            background-color: #f5f5f5;
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a3c6e;
+        }
+
+        .puzzle-selection {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .puzzle-option {
+            width: 200px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .puzzle-option:hover {
+            transform: translateY(-10px);
+        }
+
+        .puzzle-option img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .puzzle-option .puzzle-title {
+            background-color: #1a3c6e;
+            color: white;
+            padding: 0.8rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .difficulty-selection {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .difficulty-btn {
+            background-color: #65c0f7;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0.6rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Baloo 2', cursive;
+            transition: all 0.3s ease;
+        }
+
+        .difficulty-btn:hover, .difficulty-btn.active {
+            background-color: #1a3c6e;
+            transform: translateY(-3px);
+        }
+
+        .puzzle-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            display: none;
+        }
+
+        .puzzle-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+        }
+
+        .puzzle-grid {
+            display: grid;
+            gap: 2px;
+            width: 100%;
+            aspect-ratio: 1;
+            background-color: #1a3c6e;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .puzzle-piece {
+            background-size: cover;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .puzzle-piece:hover {
+            transform: scale(0.95);
+        }
+
+        .puzzle-piece.correct {
+            cursor: default;
+            transform: none;
+        }
+
+        .selected-piece {
+            border: 3px solid #ff7a3d;
+        }
+
+        .controls {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .btn-control {
+            background-color: #1a3c6e;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0.8rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Baloo 2', cursive;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+        }
+
+        .btn-control:hover {
+            background-color: #ff7a3d;
+            transform: translateY(-3px);
+        }
+
+        .btn-control:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .congratulations {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #E8F5E9;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .congratulations h3 {
+            font-size: 1.5rem;
+            color: #2E7D32;
+            margin-bottom: 1rem;
+        }
+
+        .congratulations p {
+            color: #388E3C;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .puzzle-selection {
+                gap: 1rem;
+            }
+
+            .puzzle-option {
+                width: 150px;
+            }
+
+            .puzzle-option img {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../img/logo.png" alt="Logo de Cuentos Bíblicos">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../index.html#cuentos">Cuentos</a></li>
+                <li><a href="../personajes.html">Personajes Bíblicos</a></li>
+                <li><a href="../versiculos.html">Versículos para Niños</a></li>
+                <li><a href="../juegos.html" class="active">Juegos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Rompecabezas Bíblicos</h1>
+            <p>Arma escenas de historias bíblicas</p>
+        </section>
+
+        <section class="game-section">
+            <div class="game-container">
+                <div class="game-info">
+                    <h2>Rompecabezas Bíblicos</h2>
+                    <p>Elige una imagen y un nivel de dificultad para comenzar.</p>
+                </div>
+
+                <div id="selection-screen">
+                    <h3 style="text-align: center; margin-bottom: 1.5rem; color: #1a3c6e;">Elige una imagen</h3>
+                    <div class="puzzle-selection">
+                        <div class="puzzle-option" data-image="arca">
+                            <div class="puzzle-preview" style="background-color: #ffd95c; height: 150px; display: flex; justify-content: center; align-items: center;">
+                                <i class="fas fa-ship" style="font-size: 4rem; color: #1a3c6e;"></i>
+                            </div>
+                            <div class="puzzle-title">Arca de Noé</div>
+                        </div>
+                        <div class="puzzle-option" data-image="david">
+                            <div class="puzzle-preview" style="background-color: #65c0f7; height: 150px; display: flex; justify-content: center; align-items: center;">
+                                <i class="fas fa-sling" style="font-size: 4rem; color: #1a3c6e;"></i>
+                            </div>
+                            <div class="puzzle-title">David y Goliat</div>
+                        </div>
+                        <div class="puzzle-option" data-image="jesus">
+                            <div class="puzzle-preview" style="background-color: #ff7a3d; height: 150px; display: flex; justify-content: center; align-items: center;">
+                                <i class="fas fa-water" style="font-size: 4rem; color: white;"></i>
+                            </div>
+                            <div class="puzzle-title">Jesús calma la tormenta</div>
+                        </div>
+                    </div>
+
+                    <h3 style="text-align: center; margin: 2rem 0 1.5rem; color: #1a3c6e;">Elige la dificultad</h3>
+                    <div class="difficulty-selection">
+                        <button class="difficulty-btn" data-difficulty="easy">Fácil (3x3)</button>
+                        <button class="difficulty-btn" data-difficulty="medium">Medio (4x4)</button>
+                        <button class="difficulty-btn" data-difficulty="hard">Difícil (5x5)</button>
+                    </div>
+                </div>
+
+                <div id="puzzle-screen" style="display: none;">
+                    <div class="game-stats">
+                        <div class="stat">
+                            <div class="stat-label">Movimientos</div>
+                            <div class="stat-value" id="moves">0</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Tiempo</div>
+                            <div class="stat-value" id="time">00:00</div>
+                        </div>
+                    </div>
+
+                    <div class="puzzle-container" id="puzzle-container">
+                        <div class="puzzle-grid" id="puzzle-grid"></div>
+                    </div>
+
+                    <div class="congratulations" id="congratulations">
+                        <h3>¡Felicidades!</h3>
+                        <p>Has completado el rompecabezas en <span id="final-moves">0</span> movimientos y <span id="final-time">00:00</span>.</p>
+                    </div>
+
+                    <div class="controls">
+                        <button class="btn-control" id="restart-btn">Reiniciar</button>
+                        <button class="btn-control" id="new-puzzle-btn">Nuevo Rompecabezas</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="../img/logo.png" alt="Cuentos Bíblicos para Niños">
+                <p>Cuentos Bíblicos para Niños</p>
+            </div>
+            <div class="footer-links">
+                <h3>Enlaces rápidos</h3>
+                <ul>
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li><a href="../index.html#cuentos">Cuentos</a></li>
+                    <li><a href="../personajes.html">Personajes Bíblicos</a></li>
+                    <li><a href="../versiculos.html">Versículos para Niños</a></li>
+                    <li><a href="../juegos.html">Juegos</a></li>
+                    <li><a href="../index.html#contacto">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-newsletter">
+                <h3>Suscríbete a nuestro boletín</h3>
+                <p>Recibe nuevos cuentos y actividades en tu correo electrónico.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Tu correo electrónico" required>
+                    <button type="submit" class="btn-primary">Suscribirse</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Cuentos Bíblicos para Niños. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Elementos del DOM
+        const selectionScreen = document.getElementById('selection-screen');
+        const puzzleScreen = document.getElementById('puzzle-screen');
+        const puzzleOptions = document.querySelectorAll('.puzzle-option');
+        const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+        const puzzleContainer = document.getElementById('puzzle-container');
+        const puzzleGrid = document.getElementById('puzzle-grid');
+        const movesDisplay = document.getElementById('moves');
+        const timeDisplay = document.getElementById('time');
+        const congratulationsElement = document.getElementById('congratulations');
+        const finalMovesElement = document.getElementById('final-moves');
+        const finalTimeElement = document.getElementById('final-time');
+        const restartButton = document.getElementById('restart-btn');
+        const newPuzzleButton = document.getElementById('new-puzzle-btn');
+
+        // Variables del juego
+        let selectedImage = '';
+        let selectedDifficulty = '';
+        let pieces = [];
+        let gridSize = 3;
+        let moves = 0;
+        let seconds = 0;
+        let minutes = 0;
+        let timer;
+        let firstSelectedPiece = null;
+        let gameStarted = false;
+        let gameCompleted = false;
+
+        // Imágenes para los rompecabezas (usaremos colores como placeholders)
+        const puzzleImages = {
+            arca: '#ffd95c',
+            david: '#65c0f7',
+            jesus: '#ff7a3d'
+        };
+
+        // Seleccionar imagen
+        puzzleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                selectedImage = option.dataset.image;
+                
+                // Resaltar la opción seleccionada
+                puzzleOptions.forEach(opt => opt.style.transform = 'none');
+                option.style.transform = 'translateY(-10px)';
+            });
+        });
+
+        // Seleccionar dificultad
+        difficultyButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (!selectedImage) {
+                    alert('Por favor, selecciona una imagen primero.');
+                    return;
+                }
+                
+                selectedDifficulty = button.dataset.difficulty;
+                
+                // Establecer tamaño de la cuadrícula según la dificultad
+                if (selectedDifficulty === 'easy') {
+                    gridSize = 3;
+                } else if (selectedDifficulty === 'medium') {
+                    gridSize = 4;
+                } else {
+                    gridSize = 5;
+                }
+                
+                // Iniciar el juego
+                startGame();
+            });
+        });
+
+        // Iniciar el juego
+        function startGame() {
+            selectionScreen.style.display = 'none';
+            puzzleScreen.style.display = 'block';
+            puzzleContainer.style.display = 'block';
+            congratulationsElement.style.display = 'none';
+            
+            // Reiniciar variables
+            moves = 0;
+            seconds = 0;
+            minutes = 0;
+            firstSelectedPiece = null;
+            gameStarted = true;
+            gameCompleted = false;
+            
+            // Actualizar UI
+            movesDisplay.textContent = moves;
+            timeDisplay.textContent = '00:00';
+            
+            // Crear piezas del rompecabezas
+            createPuzzlePieces();
+            
+            // Iniciar temporizador
+            startTimer();
+        }
+
+        // Crear piezas del rompecabezas
+        function createPuzzlePieces() {
+            puzzleGrid.innerHTML = '';
+            puzzleGrid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+            
+            pieces = [];
+            
+            // Crear array de índices y barajarlo
+            const indices = Array.from({ length: gridSize * gridSize }, (_, i) => i);
+            shuffleArray(indices);
+            
+            // Crear piezas
+            for (let i = 0; i < gridSize * gridSize; i++) {
+                const piece = document.createElement('div');
+                piece.classList.add('puzzle-piece');
+                
+                // Calcular la posición correcta
+                const correctRow = Math.floor(indices[i] / gridSize);
+                const correctCol = indices[i] % gridSize;
+                
+                // Establecer el color de fondo (en una implementación real, esto sería una parte de la imagen)
+                const backgroundColor = puzzleImages[selectedImage];
+                piece.style.backgroundColor = backgroundColor;
+                
+                // Añadir número a la pieza para identificarla
+                piece.textContent = indices[i] + 1;
+                piece.style.display = 'flex';
+                piece.style.justifyContent = 'center';
+                piece.style.alignItems = 'center';
+                piece.style.fontSize = '1.5rem';
+                piece.style.fontWeight = 'bold';
+                piece.style.color = '#fff';
+                
+                // Guardar información de la pieza
+                piece.dataset.index = i;
+                piece.dataset.correctIndex = indices[i];
+                
+                // Añadir evento de clic
+                piece.addEventListener('click', () => selectPiece(piece));
+                
+                puzzleGrid.appendChild(piece);
+                pieces.push(piece);
+            }
+        }
+
+        // Seleccionar una pieza
+        function selectPiece(piece) {
+            if (gameCompleted) return;
+            
+            if (!firstSelectedPiece) {
+                // Primera pieza seleccionada
+                firstSelectedPiece = piece;
+                piece.classList.add('selected-piece');
+            } else {
+                // Segunda pieza seleccionada
+                if (piece === firstSelectedPiece) {
+                    // Deseleccionar si se hace clic en la misma pieza
+                    firstSelectedPiece.classList.remove('selected-piece');
+                    firstSelectedPiece = null;
+                } else {
+                    // Intercambiar piezas
+                    swapPieces(firstSelectedPiece, piece);
+                    
+                    // Incrementar movimientos
+                    moves++;
+                    movesDisplay.textContent = moves;
+                    
+                    // Verificar si el rompecabezas está completo
+                    if (checkCompletion()) {
+                        gameCompleted = true;
+                        stopTimer();
+                        showCongratulations();
+                    }
+                    
+                    // Reiniciar selección
+                    firstSelectedPiece.classList.remove('selected-piece');
+                    firstSelectedPiece = null;
+                }
+            }
+        }
+
+        // Intercambiar dos piezas
+        function swapPieces(piece1, piece2) {
+            // Intercambiar posiciones en la cuadrícula
+            const temp = piece1.style.order;
+            piece1.style.order = piece2.style.order;
+            piece2.style.order = temp;
+            
+            // Intercambiar índices
+            const tempIndex = piece1.dataset.index;
+            piece1.dataset.index = piece2.dataset.index;
+            piece2.dataset.index = tempIndex;
+        }
+
+        // Verificar si el rompecabezas está completo
+        function checkCompletion() {
+            for (let i = 0; i < pieces.length; i++) {
+                if (parseInt(pieces[i].dataset.index) !== parseInt(pieces[i].dataset.correctIndex)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Mostrar mensaje de felicitación
+        function showCongratulations() {
+            congratulationsElement.style.display = 'block';
+            finalMovesElement.textContent = moves;
+            finalTimeElement.textContent = timeDisplay.textContent;
+        }
+
+        // Iniciar temporizador
+        function startTimer() {
+            stopTimer(); // Detener temporizador existente si lo hay
+            
+            timer = setInterval(() => {
+                seconds++;
+                if (seconds === 60) {
+                    minutes++;
+                    seconds = 0;
+                }
+                
+                timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // Detener temporizador
+        function stopTimer() {
+            clearInterval(timer);
+        }
+
+        // Reiniciar juego
+        function resetGame() {
+            // Reiniciar variables
+            moves = 0;
+            seconds = 0;
+            minutes = 0;
+            firstSelectedPiece = null;
+            gameCompleted = false;
+            
+            // Actualizar UI
+            movesDisplay.textContent = moves;
+            timeDisplay.textContent = '00:00';
+            congratulationsElement.style.display = 'none';
+            
+            // Crear nuevas piezas
+            createPuzzlePieces();
+            
+            // Reiniciar temporizador
+            stopTimer();
+            startTimer();
+        }
+
+        // Función para mezclar un array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Eventos de botones
+        restartButton.addEventListener('click', resetGame);
+        newPuzzleButton.addEventListener('click', () => {
+            stopTimer();
+            selectionScreen.style.display = 'block';
+            puzzleScreen.style.display = 'none';
+            selectedImage = '';
+            selectedDifficulty = '';
+        });
+    </script>
+</body>
+</html>
