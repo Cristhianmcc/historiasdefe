@@ -1,4 +1,7 @@
 /* Estilos para el libro */
+html {
+    scroll-behavior: smooth;
+  }
 .book-container {
     display: flex;
     justify-content: center;
